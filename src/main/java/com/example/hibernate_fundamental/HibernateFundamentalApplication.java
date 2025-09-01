@@ -2,8 +2,10 @@ package com.example.hibernate_fundamental;
 
 
 import com.example.hibernate_fundamental.entity.Account;
+import com.example.hibernate_fundamental.entity.Phone;
 import com.example.hibernate_fundamental.entity.Project;
 import com.example.hibernate_fundamental.entity.User;
+import com.example.hibernate_fundamental.enums.PhoneType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -21,7 +23,8 @@ public class HibernateFundamentalApplication {
         Session session = HibernateUtil.getSessionFactory().openSession();
         //projectExample(session);
         //accountExample(session);
-        userExample(session);
+        //userExample(session);
+        phoneExample(session);
         // Close the session
         session.close();
         // Shutdown Hibernate
@@ -96,5 +99,19 @@ public class HibernateFundamentalApplication {
         for (Object[] row : results) {
             System.out.println("ID: " + row[0] + ", First Name: " + row[1] + ", Last Name: " + row[2] + ", Full Name: " + row[3]);
         }
+    }
+
+    private static void phoneExample(Session session) {
+        Transaction tx = session.beginTransaction();
+        // Create a new phone
+        Phone phone = new Phone("Apple", "iPhone 15", PhoneType.MOBILE);
+        // Persist the phone
+        session.persist(phone);
+        System.out.println(phone);
+        // Commit transaction
+        tx.commit();
+        // Fetch the phone
+        Phone fetchedPhone = session.get(Phone.class, phone.getId());
+        System.out.println("Fetched Phone: " + fetchedPhone.getBrand() + " " + fetchedPhone.getModel() + ", Type: " + fetchedPhone.getType());
     }
 }
