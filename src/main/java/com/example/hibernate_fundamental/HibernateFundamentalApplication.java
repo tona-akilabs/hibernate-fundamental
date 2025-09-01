@@ -3,6 +3,7 @@ package com.example.hibernate_fundamental;
 
 import com.example.hibernate_fundamental.entity.Account;
 import com.example.hibernate_fundamental.entity.Project;
+import com.example.hibernate_fundamental.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -18,8 +19,9 @@ public class HibernateFundamentalApplication {
         System.out.println("Hello, Hibernate!");
         // Open a session
         Session session = HibernateUtil.getSessionFactory().openSession();
-        projectExample(session);
-        accountExample(session);
+        //projectExample(session);
+        //accountExample(session);
+        userExample(session);
         // Close the session
         session.close();
         // Shutdown Hibernate
@@ -58,6 +60,13 @@ public class HibernateFundamentalApplication {
         System.out.println(fetchedAccount);
         System.out.println("Fetched Account: Credit = " + fetchedAccount.getCredit() + ", Rate = " + fetchedAccount.getRate() + ", Interest = " + fetchedAccount.getInterest());
 
+        /*List<Account> accounts = session.createQuery(
+                        "FROM Account", Account.class)
+                .getResultList();
+
+        for (Account acc : accounts) {
+            System.out.println("ID: " + acc.getId() + ", Interest: " + acc.getInterest());
+        }*/
         // Example: select all accounts
         List<Object[]> results = session.createNativeQuery(
                         "SELECT id, credit, rate, credit * rate AS interest FROM accounts")
@@ -65,6 +74,27 @@ public class HibernateFundamentalApplication {
 
         for (Object[] row : results) {
             System.out.println("ID: " + row[0] + ", Credit: " + row[1] + ", Rate: " + row[2] + ", Interest: " + row[3]);
+        }
+    }
+
+    private static void userExample(Session session) {
+        Transaction tx = session.beginTransaction();
+        // Create a new user
+        User user = new User("John", "Doe", "johnDoe@gmail.com");
+        // Persist the user
+        session.persist(user);
+        // Commit transaction
+        tx.commit();
+        // Fetch the user
+        User fetchedUser = session.get(User.class, user.getId());
+        System.out.println(fetchedUser);
+
+        List<Object[]> results = session.createNativeQuery(
+                        "SELECT id, firstName, lastName, concat(firstName, ' ', lastName) AS fullName FROM users")
+                .getResultList();
+
+        for (Object[] row : results) {
+            System.out.println("ID: " + row[0] + ", First Name: " + row[1] + ", Last Name: " + row[2] + ", Full Name: " + row[3]);
         }
     }
 }

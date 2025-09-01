@@ -2,6 +2,7 @@ package com.example.hibernate_fundamental;
 
 import com.example.hibernate_fundamental.entity.Account;
 import com.example.hibernate_fundamental.entity.Project;
+import com.example.hibernate_fundamental.entity.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import java.util.Properties;
@@ -17,6 +18,7 @@ public class HibernateUtil {
             // Add annotated classes
             config.addAnnotatedClass(Project.class);
             config.addAnnotatedClass(Account.class);
+            config.addAnnotatedClass(User.class);
 
             sessionFactory = config.buildSessionFactory();
         } catch (Throwable ex) {
