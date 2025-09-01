@@ -16,6 +16,12 @@ public class Project {
     private String name;
     private LocalDate deadline;
 
+    public Project() {}
+    public Project(String name, LocalDate deadline) {
+        this.name = name;
+        this.deadline = deadline;
+    }
+
     public Long getId() {
         return id;
     }
