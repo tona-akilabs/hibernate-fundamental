@@ -1,10 +1,7 @@
 package com.example.hibernate_fundamental;
 
 
-import com.example.hibernate_fundamental.entity.Account;
-import com.example.hibernate_fundamental.entity.Phone;
-import com.example.hibernate_fundamental.entity.Project;
-import com.example.hibernate_fundamental.entity.User;
+import com.example.hibernate_fundamental.entity.*;
 import com.example.hibernate_fundamental.enums.PhoneType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -24,7 +21,8 @@ public class HibernateFundamentalApplication {
         //projectExample(session);
         //accountExample(session);
         //userExample(session);
-        phoneExample(session);
+        //phoneExample(session);
+        contactExample(session);
         // Close the session
         session.close();
         // Shutdown Hibernate
@@ -113,5 +111,19 @@ public class HibernateFundamentalApplication {
         // Fetch the phone
         Phone fetchedPhone = session.get(Phone.class, phone.getId());
         System.out.println("Fetched Phone: " + fetchedPhone.getBrand() + " " + fetchedPhone.getModel() + ", Type: " + fetchedPhone.getType());
+    }
+
+    private static void contactExample(Session session) {
+        Transaction tx = session.beginTransaction();
+        // Create a new contact
+        Name name = new Name("Tona", "dev");
+        Contact contact = new Contact(name, "tona-dev@gmail.com");
+        // Persist the contact
+        session.persist(contact);
+        // Commit transaction
+        tx.commit();
+        // Fetch the contact
+        Contact fetchedContact = session.get(Contact.class, contact.getId());
+        System.out.println("Fetched Contact: " + fetchedContact.getName().getFirstName());
     }
 }
